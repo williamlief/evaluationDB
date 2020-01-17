@@ -4,9 +4,7 @@ library(dplyr)
 library(readxl)
 library(readr)
 
-source("setup.r")
-
-path <- setpath("Indiana")
+path <- "data-raw/Indiana/evaluation"
 indiana <- substring(path, 1, nchar(path) - nchar("evaluation"))
 
 # Read -------------------------------------------------------------------------
@@ -153,4 +151,4 @@ df2 <- df %>%
   ) %>% 
   rename(localid = district)
 
-write_csv(df2, "cleanData/IndianaEval.csv")
+write_csv(df2, "data-clean/IndianaEval.csv")

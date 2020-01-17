@@ -4,9 +4,7 @@ library(dplyr)
 library(readxl)
 library(readr)
 
-source("setup.r")
-
-path <- setpath("Massachusetts")
+path <- "data-raw/Massachusetts/evaluation"
 
 # Read -------------------------------------------------------------------------
 
@@ -24,15 +22,15 @@ for (i in 1:length(files)) {
 }
 
 df <- bind_rows(files) %>%
-rename(name = `District Name`,
-       localid = `District Code`,
-       et = `# of Educators to be Evaluated`,
-       evaluated = `# Evaluated`,
-       e4 = `% Exemplary`,
-       e3 = `% Proficient`,
-       e2 = `% Needs Improvement`,
-       e1 = `% Unsatisfactory`
-       )
+  rename(name = `District Name`,
+         localid = `District Code`,
+         et = `# of Educators to be Evaluated`,
+         evaluated = `# Evaluated`,
+         e4 = `% Exemplary`,
+         e3 = `% Proficient`,
+         e2 = `% Needs Improvement`,
+         e1 = `% Unsatisfactory`
+  )
 
 
 # Clean ------------------------------------------------------------------------
@@ -59,4 +57,4 @@ Massachusetts <- df %>%
   filter(name != "state totals") %>% 
   arrange(localid, year) 
 
-write_csv(Massachusetts, "CleanData/MassachusettsEval.csv")
+write_csv(Massachusetts, "data-clean/MassachusettsEval.csv")

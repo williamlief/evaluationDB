@@ -6,8 +6,7 @@ library(readr)
 library(pdftools)
 library(stringr)
 
-source("setup.r")
-path <- setpath("Florida")
+path <- "data-raw/Florida/evaluation"
 
 # Read -------------------------------------------------------------------------
 
@@ -146,4 +145,4 @@ df <- bind_rows(parse) %>%
          state = "FL") %>%
   select(-e2.1, -e2.2)
 
-write_csv(df, "cleanData/FloridaEval.csv")
+write_csv(df, "data-clean/FloridaEval.csv")

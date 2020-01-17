@@ -5,9 +5,7 @@ library(dplyr)
 library(readxl)
 library(readr)
 
-source("setup.r")
-
-path <- setpath("New Jersey")
+path <- "data-raw/New Jersey/evaluation"
 
 # Read -------------------------------------------------------------------------
 
@@ -57,4 +55,4 @@ nj <- bind_rows(raw) %>%
   select(state, year, localid, name, e1, e2, e3, e4, et, e2_impute) %>% 
   filter(name!="statewide")
 
-write_csv(nj, "cleanData/NewJerseyEval.csv")
+write_csv(nj, "data-clean/NewJerseyEval.csv")

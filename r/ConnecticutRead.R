@@ -1,12 +1,11 @@
 # Setup ------------------------------------------------------------------------
-source("setup.r")
-
-path <- setpath("Connecticut")
 
 library(dplyr)
 library(readxl)
 library(tidyr)
 library(readr)
+
+path <- "data-raw/Connecticut/evaluation"
 
 # Read -------------------------------------------------------------------------
 
@@ -23,7 +22,7 @@ df <- read_excel(paste0(path, "/ctmirror_copypaste.xlsx"),
 
 # Clean ------------------------------------------------------------------------
 
-localid <- read_csv("dataCleaning/CT_name_localid_xwalk.csv")
+localid <- read_csv("r/CT_name_localid_xwalk.csv")
 
 CT <- df %>% 
   mutate(name = tolower(name),
@@ -34,4 +33,4 @@ CT <- df %>%
   select(state, name, localid, year, e1, e2, e3, e4, es, et)
   
 
-write_csv(CT, "cleanData/ConnecticutEval.csv")
+write_csv(CT, "data-clean/ConnecticutEval.csv")

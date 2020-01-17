@@ -4,9 +4,7 @@ library(readxl)
 library(tidyverse)
 library(data.table)
 
-source("setup.r")
-
-lapath <- setpath("Louisiana")
+lapath <- "data-raw/Louisiana/evaluation"
 
 # Read -------------------------------------------------------------------------
 
@@ -128,5 +126,5 @@ df3 <- df2 %>%
   select("state", "name", "localid", "year", "p1", "p2", "p3", "p4",
          "p1_impute", "p2_impute")
 
-write_csv(df3, "CleanData/LouisianaEval.csv")
+write_csv(df3, "data-clean/LouisianaEval.csv")
 

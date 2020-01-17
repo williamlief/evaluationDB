@@ -1,6 +1,4 @@
 # This file compiles the cleaned csvs into a single rmd file
-# Assumes that there is a folder cleanData in the working directory of the 
-# project containing the clean csv files.
 
 # Setup ------------------------------------------------------------------------
 
@@ -9,7 +7,7 @@ library(tidyr)
 library(readr)
 
 # Read in Files ----------------------------------------------------------------
-list <- list.files("cleanData", pattern = "Eval.csv", full.names = TRUE)
+list <- list.files("data-clean", pattern = "Eval.csv", full.names = TRUE)
 
 files <- lapply(
   list,
@@ -55,7 +53,7 @@ df2 %>% mutate(pt = p1+p2+p3+p4) %>% group_by(state) %>% summarize(mean(is.na(pt
 
 # Merge NCES -------------------------------------------------------------------
 
-nces <- read_csv("cleanData/NCES_CCD.csv") 
+nces <- read_csv("data-clean/NCES_CCD.csv") 
 
 df_nces <- df2 %>% 
   mutate(
@@ -79,6 +77,7 @@ evaluationData <- df_nces %>%
     year, 
     "district_name" = name,
     localid,
+    NCES_leaid,
     "count_teachers" = et, 
     "count_not_evaluated" = eu, 
     "count_suppressed" = es, 
@@ -98,4 +97,4 @@ evaluationData <- df_nces %>%
     "impute_level4" = e4_impute
   )
 
-saveRDS(evaluationData, "cleanData/evaluationData.rds")
+saveRDS(evaluationData, "data-clean/evaluationData.rds")

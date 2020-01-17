@@ -5,12 +5,12 @@ library(dplyr)
 library(readxl)
 library(readr)
 
-source("setup.r")
+path <- "data-raw/Idaho/evaluation"
 
 # Read, Clean ------------------------------------------------------------------
 
 
-path <- paste0(setpath("Idaho"), "/FOIA Request")
+path <- paste0(path, "/FOIA Request")
 
 list <- list.files(path = path, pattern = "*.xlsx", full.names = TRUE)
 list <- list[!grepl("example_file", list)]
@@ -32,4 +32,4 @@ Idaho <- df %>%
         ) %>% 
   select(state, year, name, localid, e4, e3, e2, e1)
 
-write_csv(Idaho, "CleanData/IdahoEval.csv")
+write_csv(Idaho, "data-clean/IdahoEval.csv")
