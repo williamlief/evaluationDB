@@ -1,9 +1,9 @@
 #' Teacher Evaluation Data
-#' 
+#'
 #' A dataset containing the count and percent of teachers
 #' receiving each evaluation score. Use `vignettes("overview")`
-#' to see data details. 
-#' 
+#' to see data details.
+#'
 #' @format a data frame with 21273 rows and 22 variables
 #' \describe{
 #'   \item{state}{the name of the state}
@@ -28,6 +28,7 @@
 #'   \item{impute_level2}{Was count imputed - see XX for more details}
 #'   \item{impute_level3}{Was count imputed - see XX for more details}
 #'   \item{impute_level4}{Was count imputed - see XX for more details}
-#' } 
-#' @source see \url{https://github.com/williamlief/evaluationDB}
-"evaluationData"
+#' }
+#' @source Data compiled from public records. See \url{https://github.com/williamlief/evaluationDB}
+#' for source code.
+"evaluationDB"
