@@ -5,4 +5,18 @@
 inst/doc
 doc
 Meta
-evaluationDB-Raw-master/
+data-raw/evaluationDB-Raw-master
+data-raw/Connecticut
+data-raw/Florida
+data-raw/Idaho
+data-raw/Indiana
+data-raw/Louisiana
+data-raw/Massachusetts
+data-raw/Missouri
+data-raw/New Jersey
+data-raw/New Mexico
+data-raw/North Carolina
+data-raw/Michigan
+data-raw/Rhode Island
+data-raw/Ohio
+data-raw/clean_csv_files/NCES_CCD.csv
