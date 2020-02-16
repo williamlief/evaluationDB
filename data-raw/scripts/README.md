@@ -1,3 +1,12 @@
+# data-raw/scripts/ 
+
+This directory holds the code to clean the raw data.
+There is one script for each state, and each script saves a csv file of its output
+to `data-raw/clean_csv_files/`. 
+
+`compile.R` combines the csv files and creates `data/evaluationDB.rda` with the final 
+variable names and formats. 
+
 # List of clean variables
 
 These notes apply to cleaning the raw data and the intermediary csv files. The compiled database gives these variables intuitively legible names. 
