@@ -13,11 +13,33 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-
+ 
 ```{r setup}
+library(evaluationDB)
+library(tidyverse)
+
+state_boxplot <- function(state){
+  
+df<-evaluationData %>% 
+  filter(state == !!state) %>% 
+  select(year, district_name, percent_level1, percent_level2, percent_level3, percent_level4) %>% 
+  pivot_longer(cols = c(percent_level1, percent_level2, percent_level3, percent_level4), names_to = "level", values_to = "percent")
+
+ggplot(df, aes(y = percent, fill = level)) +
+                 geom_boxplot() +
+  facet_wrap("year")
+}
+
+state_graph <- function(state){
+  state_boxplot(state)
+}
 
 ```
 
+## Connecticut
+```{r, CT}
+state_graph("CT")
+```
 # TO DO
 
 This vignette will describe the data, why its important
