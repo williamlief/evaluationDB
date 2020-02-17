@@ -28,7 +28,7 @@ df <- df %>%
   )
 
 df2 <- df %>%
-   filter(!has_p) %>%
+  filter(!has_p) %>%
   replace_na(list(e1 = 0, e2 = 0, e3 = 0, e4 = 0)) %>%
   mutate(
     p1 = e1 / et,
@@ -41,7 +41,9 @@ df2 <- df %>%
   ) %>%
   bind_rows(df %>%
               filter(has_p) %>%
-              mutate_at(vars(p1, p2, p3, p4), ~. / 100))
+              mutate_at(vars(p1, p2, p3, p4), ~. / 100)) %>%
+  mutate_at(vars(c(year, starts_with("e"))), as.integer) %>%
+  mutate_at(vars(ends_with("impute")), function(x) replace_na(as.logical(x), FALSE))
 
 df2 %>% group_by(state) %>% summarize(sum(is.na(et)))
 # check p data not missing
@@ -62,16 +64,38 @@ df_nces <- df2 %>%
       state == "FL" ~ stringr::str_pad(localid, 2, side = "left", "0"),
       state == "IN" ~ stringr::str_pad(localid, 4, side = "left", "0"),
       state == "MI" ~ stringr::str_pad(localid, 5, side = "left", "0"),
+      state == "CT" ~ stringr::str_pad(localid, 3, side = "left", "0"),
+      state == "RI" ~ stringr::str_pad(localid, 2, side = "left", "0"),
       TRUE ~ localid
     )) %>%
   left_join(nces, by = c("state", "year", "localid")) %>%
+  # manual fixing
+  mutate(NCES_leaid = case_when(
+    localid == "82015" ~ "2601103", # Detroit, MI is reporting this id before NCES has it
+    TRUE ~ NCES_leaid
+  )) %>%
+  # manual removals
   filter(!(state == "ID" & is.na(NCES_leaid))) # visual check confirmed these are all charter schools
 
 df_nces %>% group_by(state) %>% summarize(sum(is.na(NCES_leaid)))
 
 # Rename/Reorder and Save ------------------------------------------------------
 
+# missing p-impute variables because never used, put them in here for the coalesce step
+p_imputes <- c("p1_impute", "p2_impute", "p3_impute", "p4_impute")
+for(p in p_imputes) {
+  if(!p %in% names(df_nces)){
+    df_nces[p] = FALSE
+  }
+}
+
 evaluationDB <- df_nces %>%
+  mutate(
+    impute_level1 = coalesce(e1_impute, p1_impute),
+    impute_level2 = coalesce(e2_impute, p2_impute),
+    impute_level3 = coalesce(e3_impute, p3_impute),
+    impute_level4 = coalesce(e4_impute, p4_impute),
+  ) %>%
   select(
     state,
     year,
@@ -91,10 +115,10 @@ evaluationDB <- df_nces %>%
     "percent_level2" = p2,
     "percent_level3" = p3,
     "percent_level4" = p4,
-    "impute_level1" = e1_impute,
-    "impute_level2" = e2_impute,
-    "impute_level3" = e3_impute,
-    "impute_level4" = e4_impute
+    "impute_level1",
+    "impute_level2",
+    "impute_level3",
+    "impute_level4"
   )
 
 usethis::use_data(evaluationDB, overwrite = TRUE)
