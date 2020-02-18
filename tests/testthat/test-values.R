@@ -1,5 +1,3 @@
-context("Values are plausible")
-
 test_that("No Negative Values", {
 
   df <- dplyr::select_if(evaluationDB, is.numeric)
@@ -19,6 +17,9 @@ test_that("Percent Cols Sum To One", {
 
 test_that("Total teachers >= sum of evaluations reported", {
 
+  cols <- evaluationDB[, grepl("count", names(evaluationDB))]
+  sum_eval <- rowSums(cols[,!grepl("teachers", names(cols))], na.rm = TRUE)
+  expect_true(all(evaluationDB$count_teachers >= sum_eval))
 })
 
 test_that("Years are in expected range - (2005-2025)", {

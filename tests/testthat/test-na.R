@@ -1,5 +1,3 @@
-context("No Missing Values")
-
 # https://stackoverflow.com/questions/60269017/using-testthat-to-check-all-variables-in-a-data-frame-for-na-values
 
 test_that("No Missing Values", {
