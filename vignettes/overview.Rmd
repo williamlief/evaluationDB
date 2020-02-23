@@ -40,6 +40,52 @@ state_graph <- function(state){
 ```{r, CT}
 state_graph("CT")
 ```
+
+## Florida
+```{r, FL}
+state_graph("FL")
+```
+
+## Idaho
+```{r, ID}
+state_graph("ID")
+```
+
+## Indiana
+```{r, IN}
+state_graph("IN")
+```
+
+## Louisiana
+```{r, LA}
+state_graph("LA")
+```
+
+## Massachussetts
+```{r, MA}
+state_graph("MA")
+```
+
+## Michigan
+```{r, MI}
+state_graph("MI")
+```
+
+## New Jersey
+```{r, NJ}
+state_graph("NJ")
+```
+
+## New York
+```{r, NY}
+state_graph("NY")
+```
+
+## Ohio
+```{r, OH}
+state_graph("OH")
+```
+
 # TO DO
 
 This vignette will describe the data, why its important

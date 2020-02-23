@@ -34,3 +34,10 @@ These notes apply to cleaning the raw data and the intermediary csv files. The c
 
 # Data Imputation / Suppression
 States have adopted various strategies to preserve the anonymity of teacher evaluation ratings. Some states arbitrarily suppress a fraction of ratings, others suppress all ratings in districts with less than 10 teachers, and others suppress ratings when fewer than n teachers are in that category. The _impute variables above are used to track when I have tried to fill in suppressed rating information. For more information about imputation see the state_details.md file.
+
+Louisiana data that is listed as less than or equal to 1% is imputed as 1 for the first two evaluation categories. p1 and p2 percentage values are then estimated from subtracting the known percentages from 100; if both p1 and p2 are imputed than everything is pushed to p2.
+
+New Jersey imputes e2 data as 1 if both e1 and e2 are listed as NA.
+
+
+
