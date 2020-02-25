@@ -91,10 +91,10 @@ for(p in p_imputes) {
 
 evaluationDB <- df_nces %>%
   mutate(
-    impute_level1 = coalesce(e1_impute, p1_impute),
-    impute_level2 = coalesce(e2_impute, p2_impute),
-    impute_level3 = coalesce(e3_impute, p3_impute),
-    impute_level4 = coalesce(e4_impute, p4_impute),
+    impute_level1 = any(e1_impute, p1_impute),
+    impute_level2 = any(e2_impute, p2_impute),
+    impute_level3 = any(e3_impute, p3_impute),
+    impute_level4 = any(e4_impute, p4_impute),
   ) %>%
   select(
     state,

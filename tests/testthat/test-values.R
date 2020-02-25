@@ -3,7 +3,7 @@
 test_that("No Negative Values", {
 
   df <- dplyr::select_if(evaluationDB, is.numeric)
-  res <- apply(df, 2, function(x) sum(x < 0, na.rm = T) > 0)
+  res <- apply(df, 2, function(x) sum(x < 0, na.rm = T) == 0)
   expect_true(all(res),
               label = paste(paste(names(which(res)), collapse=", ")))
 

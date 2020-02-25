@@ -31,7 +31,8 @@ CT <- df %>%
          year = as.numeric(substr(year, 1, 4)) + 1
   ) %>%
   left_join(localid, by = "name") %>%
-  select(state, name, localid, year, e1, e2, e3, e4, es, et)
+  select(state, name, localid, year, e1, e2, e3, e4, es, et) %>%
+  filter(!(year == "2015" & name == "stafford")) # this row has negative values
 
 
 write_csv(CT, "data-raw/clean_csv_files/ConnecticutEval.csv")
