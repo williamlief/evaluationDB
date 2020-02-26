@@ -9,13 +9,15 @@ test_that("No Negative Values", {
 
 })
 
-test_that("Percent Cols Sum To One", {
+test_that("Percent Cols Sum To One (.99-1.01)", {
 
   unity <- rowSums(evaluationDB[,grep("percent", names(evaluationDB))], na.rm = TRUE)
-  rows <- sapply(unity, function(x) round(x, 2) == 1)
+  rows <- sapply(unity, function(x) dplyr::between(round(x, 2), .99, 1.01))
   pct_eq_one <- mean(rows)
 
   expect_gte(pct_eq_one, 1)
+
+  # Note - failure case in CT, Hartford, 2015, present in source data
 })
 
 test_that("Total teachers >= sum of evaluations reported", {
@@ -23,6 +25,8 @@ test_that("Total teachers >= sum of evaluations reported", {
   cols <- evaluationDB[, grepl("count", names(evaluationDB))]
   sum_eval <- rowSums(cols[,!grepl("teachers", names(cols))], na.rm = TRUE)
   pct_gte <- mean(evaluationDB$count_teachers >= sum_eval, na.rm = TRUE)
+
+  # Failure cases in CT, spot checked and confirmed error in source data
 
   expect_gte(pct_gte, 1)
 })

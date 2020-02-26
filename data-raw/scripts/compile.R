@@ -41,7 +41,7 @@ df2 <- df %>%
   ) %>%
   bind_rows(df %>%
               filter(has_p) %>%
-              mutate_at(vars(p1, p2, p3, p4), ~. / 100)) %>%
+              mutate_at(vars(p1, p2, p3, p4, pu), ~. / 100)) %>%
   mutate_at(vars(c(year, starts_with("e"))), as.integer) %>%
   mutate_at(vars(ends_with("impute")), function(x) replace_na(as.logical(x), FALSE))
 

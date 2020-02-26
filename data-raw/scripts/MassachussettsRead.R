@@ -9,12 +9,12 @@ path <- "data-raw/Massachusetts/evaluation"
 # Read -------------------------------------------------------------------------
 
 list <- list.files(path = path, pattern = "*.xlsx", full.names = TRUE)
-files <- lapply(list, read_excel, na = c("NA","NI","NR"), skip = 1) 
+files <- lapply(list, read_excel, na = c("NA","NI","NR"), skip = 1)
 
 # File name does not include year, but first row of excel file has year as header info
 years <- lapply(list, function(x) {
   x <- read_excel(x, n_max =1, col_names = FALSE)
-  return(as.numeric(substr(x[1,1], 1, 4)) + 1)}) %>% 
+  return(as.numeric(substr(x[1,1], 1, 4)) + 1)}) %>%
   unlist()
 
 for (i in 1:length(files)) {
@@ -40,21 +40,21 @@ convertNumber <- function(e, evaluated) {
 }
 
 Massachusetts <- df %>%
+  mutate(evaluated = as.numeric(gsub(",", "", evaluated))) %>%
+  mutate_at(
+    vars(e1, e2, e3, e4),
+    list(~convertNumber(., evaluated))
+  ) %>%
   mutate(
     state = "MA",
     name = tolower(name),
-    evaluated = as.numeric(gsub(",", "", evaluated)), 
     et = as.numeric(gsub(",", "", et)),
     es = ifelse(e1 == "-" & e2 == "-" & e3 == "-" & e4 == "-", evaluated, 0),
-    eu = et - evaluated
-    ) %>% 
-  mutate_at(
-    vars(e1, e2, e3, e4), 
-    list(~convertNumber(., evaluated))
-    ) %>% 
+    eu = et - sum(e1, e2, e3, e4, na.rm = TRUE)
+    ) %>%
   select("state", "name", "localid", "year", "et", "eu", "es",
-         "e4", "e3", "e2", "e1") %>% 
-  filter(name != "state totals") %>% 
-  arrange(localid, year) 
+         "e4", "e3", "e2", "e1") %>%
+  filter(name != "state totals") %>%
+  arrange(localid, year)
 
 write_csv(Massachusetts, "data-raw/clean_csv_files/MassachusettsEval.csv")
