@@ -79,6 +79,9 @@ df_nces <- df2 %>%
 
 df_nces %>% group_by(state) %>% summarize(sum(is.na(NCES_leaid)))
 
+warning(paste("Dropping", sum(is.na(df_nces$NCES_leaid))  ,"districts without NCES leaids"))
+df_nces <- df_nces[!is.na(df_nces$NCES_leaid),]
+
 # Rename/Reorder and Save ------------------------------------------------------
 
 # missing p-impute variables because never used, put them in here for the coalesce step
