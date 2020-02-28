@@ -45,6 +45,7 @@ Massachusetts <- df %>%
     vars(e1, e2, e3, e4),
     list(~convertNumber(., evaluated))
   ) %>%
+  rowwise() %>%
   mutate(
     state = "MA",
     name = tolower(name),
