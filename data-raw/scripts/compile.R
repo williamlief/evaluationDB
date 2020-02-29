@@ -29,29 +29,29 @@ df <- df %>%
 
 df2 <- df %>%
   filter(!has_p) %>%
-  replace_na(list(e1 = 0, e2 = 0, e3 = 0, e4 = 0)) %>%
+  replace_na(list(e1 = 0, e2 = 0, e3 = 0, e4 = 0, es = 0, eu = 0)) %>%
   mutate(
-    p1 = e1 / et,
-    p2 = e2 / et,
-    p3 = e3 / et,
-    p4 = e4 / et,
-    ps = es / et,
-    pu = eu / et,
-    pt = p1+p2+p3+p4+p2+pu
+    tmp_total = e1 + e2 + e3 + e4 + es,
+    p1 = e1 / tmp_total,
+    p2 = e2 / tmp_total,
+    p3 = e3 / tmp_total,
+    p4 = e4 / tmp_total,
+    ps = es / tmp_total,
+    # pu = eu / et,
+    # pt = p1+p2+p3+p4+p2+pu
   ) %>%
   bind_rows(df %>%
               filter(has_p) %>%
-              mutate_at(vars(p1, p2, p3, p4, pu), ~. / 100)) %>%
+              mutate(ps = 0) %>% # swap to line below if we get data with suppressed percents
+              # replace_na(list(ps = 0)) %>%
+              mutate(tmp_total = (p1 + p2 + p3 + p4 + ps), # rescale to 100
+                     p1 = p1 / tmp_total,
+                     p2 = p2 / tmp_total,
+                     p3 = p3 / tmp_total,
+                     p4 = p4 / tmp_total,
+                     ps = ps / tmp_total)) %>%
   mutate_at(vars(c(year, starts_with("e"))), as.integer) %>%
   mutate_at(vars(ends_with("impute")), function(x) replace_na(as.logical(x), FALSE))
-
-df2 %>% group_by(state) %>% summarize(sum(is.na(et)))
-# check p data not missing
-df2 %>% group_by(state) %>% summarize(sum(is.na(p1)))
-df2 %>% group_by(state) %>% summarize(sum(is.na(p2)))
-df2 %>% group_by(state) %>% summarize(sum(is.na(p3)))
-df2 %>% group_by(state) %>% summarize(sum(is.na(p4)))
-df2 %>% mutate(pt = p1+p2+p3+p4) %>% group_by(state) %>% summarize(mean(is.na(pt)))
 
 # Merge NCES -------------------------------------------------------------------
 
@@ -79,8 +79,16 @@ df_nces <- df2 %>%
 
 df_nces %>% group_by(state) %>% summarize(sum(is.na(NCES_leaid)))
 
+# Deal with Missing Values / NAN ------------------------------------------------
+
+# NCES - drop
 warning(paste("Dropping", sum(is.na(df_nces$NCES_leaid))  ,"districts without NCES leaids"))
 df_nces <- df_nces[!is.na(df_nces$NCES_leaid),]
+
+# Get rid of districts without any p-values
+warning(paste("Dropping", sum(is.na(df_nces$p1))  ,"districts without any evaluation percents"))
+df_nces <- df_nces[!is.nan(df_nces$p1),]
+
 
 # Rename/Reorder and Save ------------------------------------------------------
 
@@ -93,6 +101,7 @@ for(p in p_imputes) {
 }
 
 evaluationDB <- df_nces %>%
+  rowwise() %>%
   mutate(
     impute_level1 = any(e1_impute, p1_impute),
     impute_level2 = any(e2_impute, p2_impute),
@@ -112,7 +121,7 @@ evaluationDB <- df_nces %>%
     "count_level2" = e2,
     "count_level3" = e3,
     "count_level4" = e4,
-    "percent_not_evaluated" = pu,
+    # "percent_not_evaluated" = pu,
     "percent_suppressed" = ps,
     "percent_level1" = p1,
     "percent_level2" = p2,
@@ -122,6 +131,7 @@ evaluationDB <- df_nces %>%
     "impute_level2",
     "impute_level3",
     "impute_level4"
-  )
+  ) %>%
+  ungroup()
 
 usethis::use_data(evaluationDB, overwrite = TRUE)

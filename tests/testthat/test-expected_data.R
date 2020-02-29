@@ -6,7 +6,7 @@
 expected_names <- c("state", "year", "district_name", "localid", "NCES_leaid",
                     "count_teachers", "count_not_evaluated", "count_suppressed",
                     "count_level1", "count_level2", "count_level3", "count_level4",
-                    "percent_not_evaluated", "percent_suppressed",
+                    "percent_suppressed",
                     "percent_level1", "percent_level2", "percent_level3", "percent_level4",
                     "impute_level1", "impute_level2", "impute_level3", "impute_level4")
 

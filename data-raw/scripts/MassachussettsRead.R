@@ -51,7 +51,8 @@ Massachusetts <- df %>%
     name = tolower(name),
     et = as.numeric(gsub(",", "", et)),
     es = ifelse(e1 == "-" & e2 == "-" & e3 == "-" & e4 == "-", evaluated, 0),
-    eu = et - sum(e1, e2, e3, e4, na.rm = TRUE)
+    eu = et - sum(e1, e2, e3, e4, na.rm = TRUE),
+    eu = if_else(eu < 0, 0, eu)
     ) %>%
   select("state", "name", "localid", "year", "et", "eu", "es",
          "e4", "e3", "e2", "e1") %>%
