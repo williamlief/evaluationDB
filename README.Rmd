@@ -4,9 +4,56 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+
+```{r include = FALSE}
+library(evaluationDB)
+library(tidyverse)
+library(gganimate)
+```
+
+
 # Teacher Evaluation Database
 
-This project is a compilation of publicly available teacher evaluation reports for US school districts. Detailed notes with the sources of all data are part of this repostiory, as is all code used to clean and process the data. 
+This project is a compilation of publicly available teacher evaluation reports for US school districts.
+The goal of this data is to facilitate an understanding of the teacher evaluation reforms that occured in the 2010s, by examining the district level variation in reported teacher quality. 
+
+## Previous work has reported state level evaluation results; this project reports district level data
+
+<!-- ```{r} -->
+
+<!-- p1 <- evaluationDB %>%  -->
+<!--   filter(year == 2015, !is.na(count_teachers)) %>%  -->
+<!--   select(count_level1, count_level2, count_level3, count_level4, NCES_leaid, year) %>%  -->
+<!--   pivot_longer(c(-NCES_leaid, -year), names_to = "level", values_to = "count") %>% -->
+<!--   group_by(year, level) %>%  -->
+<!--   summarize(count = sum(count, na.rm = T)) %>%  -->
+<!--   ggplot(data = .,  -->
+<!--          aes(x = year, y = count, fill = level)) + -->
+<!--   geom_col(position = "fill")  -->
+
+<!-- p2 <- evaluationDB %>%  -->
+<!--   filter(year == 2015, !is.na(count_teachers)) %>%  -->
+<!--   mutate( -->
+<!--     p1 = percent_level1,  -->
+<!--     p2 = p1 + percent_level2, -->
+<!--     p3 = p2 + percent_level3, -->
+<!--     p4 = p3 + percent_level4) %>%  -->
+<!--   arrange(p2) %>%  -->
+<!--   mutate(index = cumsum(count_teachers)) %>%  -->
+<!--   select(NCES_leaid, index, p1, p2, p3, p4) %>%  -->
+<!--   ggplot(data = ., aes(x = index)) + -->
+<!--   geom_ribbon(aes(ymax = p1, ymin = 0 ), fill = "red") + -->
+<!--   geom_ribbon(aes(ymax = p2, ymin = p1), fill = "blue") + -->
+<!--   geom_ribbon(aes(ymax = p3, ymin = p2), fill = "green") + -->
+<!--   geom_ribbon(aes(ymax = p4, ymin = p3), fill = "purple") -->
+
+<!-- ``` -->
+
+```{r echo = FALSE, fig.cap = "Overall teacher evaluation results for Ohio, then disaggregated by district"}
+knitr::include_graphics("resources/ratings.gif")
+```
+
+## Details
 
 **This database does not include teacher names and evaluation scores**. 
 It includes only district level counts of teachers receiving each final, aggregate rating in a district. 
@@ -17,13 +64,10 @@ To our knowledge, there is no evidence that statewide teacher evaluation mandate
 This database is a first step towards understanding what happened with the push to reform teacher evaluations of the 2010s. 
 With the evaluation reforms, states moved from Satisfactory/Unsatisfactory rating systems to systems with 4 or more categories ranging from Ineffective to Highly Effective.
 
+Detailed notes with the sources of all data are part of this repostiory, as is all code used to clean and process the data. 
+
 ## Available Data
 Evaluation records have been obtained from the following states:
-
-```{r include = FALSE}
-library(evaluationDB)
-library(dplyr)
-```
 
 
 ```{r, echo = FALSE}

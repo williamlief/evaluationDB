@@ -4,9 +4,69 @@
 # Teacher Evaluation Database
 
 This project is a compilation of publicly available teacher evaluation
-reports for US school districts. Detailed notes with the sources of all
-data are part of this repostiory, as is all code used to clean and
-process the data.
+reports for US school districts. The goal of this data is to facilitate
+an understanding of the teacher evaluation reforms that occured in the
+2010s, by examining the district level variation in reported teacher
+quality.
+
+## Previous work has reported state level evaluation results; this project reports district level data
+
+<!-- ```{r} -->
+
+<!-- p1 <- evaluationDB %>%  -->
+
+<!--   filter(year == 2015, !is.na(count_teachers)) %>%  -->
+
+<!--   select(count_level1, count_level2, count_level3, count_level4, NCES_leaid, year) %>%  -->
+
+<!--   pivot_longer(c(-NCES_leaid, -year), names_to = "level", values_to = "count") %>% -->
+
+<!--   group_by(year, level) %>%  -->
+
+<!--   summarize(count = sum(count, na.rm = T)) %>%  -->
+
+<!--   ggplot(data = .,  -->
+
+<!--          aes(x = year, y = count, fill = level)) + -->
+
+<!--   geom_col(position = "fill")  -->
+
+<!-- p2 <- evaluationDB %>%  -->
+
+<!--   filter(year == 2015, !is.na(count_teachers)) %>%  -->
+
+<!--   mutate( -->
+
+<!--     p1 = percent_level1,  -->
+
+<!--     p2 = p1 + percent_level2, -->
+
+<!--     p3 = p2 + percent_level3, -->
+
+<!--     p4 = p3 + percent_level4) %>%  -->
+
+<!--   arrange(p2) %>%  -->
+
+<!--   mutate(index = cumsum(count_teachers)) %>%  -->
+
+<!--   select(NCES_leaid, index, p1, p2, p3, p4) %>%  -->
+
+<!--   ggplot(data = ., aes(x = index)) + -->
+
+<!--   geom_ribbon(aes(ymax = p1, ymin = 0 ), fill = "red") + -->
+
+<!--   geom_ribbon(aes(ymax = p2, ymin = p1), fill = "blue") + -->
+
+<!--   geom_ribbon(aes(ymax = p3, ymin = p2), fill = "green") + -->
+
+<!--   geom_ribbon(aes(ymax = p4, ymin = p3), fill = "purple") -->
+
+<!-- ``` -->
+
+![Overall teacher evaluation results for Ohio, then disaggregated by
+district](resources/ratings.gif)
+
+## Details
 
 **This database does not include teacher names and evaluation scores**.
 It includes only district level counts of teachers receiving each final,
@@ -24,22 +84,26 @@ the evaluation reforms, states moved from Satisfactory/Unsatisfactory
 rating systems to systems with 4 or more categories ranging from
 Ineffective to Highly Effective.
 
+Detailed notes with the sources of all data are part of this repostiory,
+as is all code used to clean and process the data.
+
 ## Available Data
 
 Evaluation records have been obtained from the following states:
 
 | state | 2012 | 2013 | 2014 | 2015 | 2016 | 2017 | 2018 | 2019 |
 | :---- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| FL    |   73 |   74 |   73 |   74 |   74 |   74 |   73 |      |
-| MI    |  856 |  875 |  893 |  896 |  896 |  894 |  887 |  889 |
-| IN    |      |  249 |  317 |  365 |  381 |  378 |  391 |  396 |
-| LA    |      |   69 |   69 |   69 |   69 |   71 |   70 |      |
-| MA    |      |  403 |  407 |  405 |  407 |  404 |  406 |      |
+| FL    |   72 |   73 |   72 |   70 |   74 |   74 |   73 |      |
+| MI    |  856 |  875 |  893 |  896 |  896 |  894 |  887 |  888 |
+| IN    |      |  238 |  306 |  350 |  371 |  374 |  388 |  384 |
+| LA    |      |   69 |   69 |   69 |   69 |   68 |   68 |      |
+| MA    |      |   56 |  135 |  158 |  176 |  191 |  210 |      |
 | NY    |      |  718 |  759 |  758 |  635 |      |      |      |
-| CT    |      |      |  165 |  165 |      |      |      |      |
-| NJ    |      |      |  582 |  576 |  582 |      |      |      |
-| OH    |      |      |  793 |      |      |  608 |  608 |  608 |
-| ID    |      |      |      |  155 |  155 |  156 |  158 |  165 |
+| RI    |      |   53 |   56 |   59 |   60 |   59 |   58 |      |
+| CT    |      |      |  165 |  164 |      |      |      |      |
+| NJ    |      |      |  582 |  576 |  580 |      |      |      |
+| OH    |      |      |  772 |      |      |  608 |  607 |  608 |
+| ID    |      |      |      |  147 |  148 |  151 |  153 |  159 |
 
 Number of districts with teacher evaluation data by state and year
 
