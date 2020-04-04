@@ -22,14 +22,16 @@ test_that("No Extra Variables", {
 
 
 # This is the list of documented states, will need to be manually updated
-expected_states <- c()
+expected_states <- c("CT", "FL", "ID", "IN", "LA", "MA", "MI", "NJ", "OH", "RI")
 
 test_that("All Documented States Exist", {
-  expect_true(FALSE)
+  res <- expected_states %in% unique(evaluationDB$state)
+  expect_true(all(res))
 })
 
 test_that("No Extra States Exist", {
-  expect_true(FALSE)
+  res <- unique(evaluationDB$state) %in% expected_states
+  expect_true(all(res))
 })
 
 
