@@ -14,26 +14,25 @@
 #'
 #' @return
 raw_data_import <- function() {
-  if(file.exists("raw-download")) {
-    stop("There is already a zip file called 'raw-download' in the
-    working directory, download cancelled to prevent overwriting")
-  }
+  if(file.exists("data-raw/evaluationDB-Raw-master.zip")) { set.warn = TRUE } else {set.warn = FALSE}
   if(!dir.exists("data-raw")) {
     stop("'data-raw' directory not found. Do you need to clone the repository at
          https://github.com/williamlief/evaluationDB?")
   }
 
-  download.file("https://github.com/williamlief/evaluationDB-Raw",
-                "raw-download.zip")
+  download.file("https://github.com/williamlief/evaluationDB-Raw/archive/master.zip",
+                "data-raw/evaluationDB-Raw-master.zip")
 
-  unzip("raw-download.zip", exdir = "data-raw")
+  if(set.warn){warning("A pre-existing file 'data-raw/evaluationDB-Raw-master' has been overwritten.")}
+
+  unzip("data-raw/evaluationDB-Raw-master.zip", exdir = "data-raw")
 
   # Move all the files down one level - must manually remake the directory structure
   files <- list.files("data-raw/evaluationDB-Raw-master", recursive = TRUE)
-  files <- files[!grepl(".Rmd|.md", files)] # get rid of root readme
+  files <- files[!grepl(".Rmd|.md", files)] # get rid of downloaded readme
   dirs <- unique(paste0("data-raw/", sub("\\/[^\\/]*$", "", files)))
   dirs <- dirs[!grepl("\\.", dirs)] # removes nces_ccd file, not a dir
-  lapply(dirs, dir.create, recursive = TRUE)
+  lapply(dirs, dir.create, recursive = TRUE, showWarnings = FALSE)
 
   file.copy(from = paste0("data-raw/evaluationDB-Raw-master/", files),
             to = paste0("data-raw/", files),
@@ -45,7 +44,7 @@ raw_data_import <- function() {
 
   # cleanup
   unlink("data-raw/NCES_CCD.csv")
-  unlink("data-raw/evaluationDB-Raw-master")
-  unlink("raw-download.zip")
+  unlink("data-raw/evaluationDB-Raw-master", recursive = TRUE)
+  unlink("data-raw/evaluationDB-RAw-master.zip")
 
 }
