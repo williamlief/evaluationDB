@@ -1,7 +1,7 @@
 library(tidyverse)
 library(readxl)
 
-df <- read_excel("/Users/williamlief/Documents/ResearchProjects/EvaluationData/evaluationDB/data-raw/New Mexico/Evaluation/20-017   Esbenshade     Document--Teacher Ratings for all Districts 2013-2018.xlsx")
+df <- read_excel("data-raw/New Mexico/Evaluation/20-017   Esbenshade     Document--Teacher Ratings for all Districts 2013-2018.xlsx")
 
 # Name manipulation
 # Extract the school years so we get the right year for each column
