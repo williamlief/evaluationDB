@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 library(readxl)
 library(tidyr)
 library(dplyr)
@@ -21,6 +22,19 @@ for(i in 1:length(names)){
     names[i] = names[i-1]
   }
 }
+=======
+library(tidyverse)
+library(readxl)
+
+df <- read_excel("data-raw/New Mexico/Evaluation/20-017   Esbenshade     Document--Teacher Ratings for all Districts 2013-2018.xlsx")
+
+# Name manipulation
+# Extract the school years so we get the right year for each column
+names <- names(df)
+names <- gsub("\\.\\.\\..*", "", names)
+names <- gsub("School Year \\d\\d-", "", names)
+for(i in 1:length(names)) { if(names[i] == ""){ names[i] = names[i-1] }}
+>>>>>>> 6db2a3e4bde79b92c66ce1a42a03fd973b498e02
 
 # grab the first row for the effectiveness label and combine with years, then reassign names
 newnames <- unlist(df[1,])
@@ -37,6 +51,7 @@ long <- df %>%
     names_sep = "_",
     names_ptypes = list(
       year = integer()))
+<<<<<<< HEAD
 
 NewMexico <- long %>%
   mutate(year = year + 2000,
@@ -50,3 +65,5 @@ NewMexico <- long %>%
          e5 = `Exemplary`)
 
 write_csv(NewMexico, "data-raw/clean_csv_files/NewMexicoEval.csv")
+=======
+>>>>>>> 6db2a3e4bde79b92c66ce1a42a03fd973b498e02
