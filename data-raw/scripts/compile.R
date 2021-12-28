@@ -5,14 +5,17 @@
 library(dplyr)
 library(tidyr)
 library(readr)
+library(tidylog)
 
 # Read in Files ----------------------------------------------------------------
 list <- list.files("data-raw/clean_csv_files", pattern = "Eval.csv", full.names = TRUE)
 
+list <- list[!grepl("NewMexico", list)] # remove New Mexico as it has five categories
+
 files <- lapply(
   list,
   read_csv,
-  col_types = cols(.default = "d", state = "c", localid = "c", name = "c")
+  col_types = cols(.default = "d", state = "c", year = 'i', localid = "c", name = "c")
 )
 
 df <- files %>% bind_rows()
@@ -55,7 +58,8 @@ df2 <- df %>%
 
 # Merge NCES -------------------------------------------------------------------
 
-nces <- read_csv("data-raw/clean_csv_files/NCES_CCD.csv")
+nces <- read_csv("data-raw/clean_csv_files/NCES_CCD.csv",
+                 col_types = cols(year = 'i'))
 
 df_nces <- df2 %>%
   mutate(
@@ -77,9 +81,11 @@ df_nces <- df2 %>%
   # manual removals
   filter(!(state == "ID" & is.na(NCES_leaid))) # visual check confirmed these are all charter schools
 
-df_nces %>% group_by(state) %>% summarize(sum(is.na(NCES_leaid)))
-
 # Deal with Missing Values / NAN ------------------------------------------------
+
+df_nces %>% group_by(state) %>% summarize(sum(is.na(NCES_leaid)))
+df_nces %>% group_by(state) %>% summarize(sum(is.na(p1)))
+
 
 # NCES - drop
 warning(paste("Dropping", sum(is.na(df_nces$NCES_leaid))  ,"districts without NCES leaids"))
@@ -92,7 +98,9 @@ df_nces <- df_nces[!is.nan(df_nces$p1),]
 
 # Rename/Reorder and Save ------------------------------------------------------
 
-# missing p-impute variables because never used, put them in here for the coalesce step
+# missing some of the p-impute variables because they were never used in any source
+# file. This code adds in whichever ones are missing. In the next step we combine
+# p_impute and count impute into a generic impute variable.
 p_imputes <- c("p1_impute", "p2_impute", "p3_impute", "p4_impute")
 for(p in p_imputes) {
   if(!p %in% names(df_nces)){
