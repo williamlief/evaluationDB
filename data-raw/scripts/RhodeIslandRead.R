@@ -23,7 +23,7 @@ toNumber = function(e) {
 
 RhodeIsland <- df %>%
   separate(name, c("year", "localid", "name"), sep = "\\|") %>%
-  mutate(year = as.numeric(substr(year, 1, 4)),
+  mutate(year = as.numeric(substr(year, 1, 4)) + 1,
          state = "RI",
          name = tolower(name)) %>%
   mutate_at(
