@@ -2,6 +2,16 @@
 # or have addeed one, if we just ran expect_equal(names(evaluationDB), expected_names)
 # we wouldn't know if variable addition/subtraction was causing the problem
 
+# Current observation count! update with new data. This test is expected to fail
+# frequently, but forces us to be very explicit about adding or removing rows.
+# Remember to update r/evaluationDB.R documentation when this count changes!
+expected_rows <- 19983
+
+test_that("Expected number of rows exists", {
+  expect_equal(nrow(evaluationDB), expected_rows)
+})
+
+
 # This is the list of documented variables, will need to be manually updated
 expected_names <- c("state", "year", "district_name", "localid", "NCES_leaid",
                     "count_teachers", "count_not_evaluated", "count_suppressed",
