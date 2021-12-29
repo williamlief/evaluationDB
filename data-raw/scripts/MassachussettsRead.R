@@ -9,7 +9,7 @@ path <- "data-raw/Massachusetts/evaluation"
 # Read -------------------------------------------------------------------------
 
 list <- list.files(path = path, pattern = "*.xlsx", full.names = TRUE)
-files <- lapply(list, read_excel, na = c("NA","NI","NR"), skip = 1)
+files <- lapply(list, read_excel, na = c("NA","NI","NR", "-"), skip = 1)
 
 # File name does not include year, but first row of excel file has year as header info
 years <- lapply(list, function(x) {
