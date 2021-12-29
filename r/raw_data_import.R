@@ -23,7 +23,7 @@ raw_data_import <- function() {
          https://github.com/williamlief/evaluationDB?")
   }
 
-  download.file("https://github.com/williamlief/evaluationDB-Raw",
+  download.file("https://github.com/williamlief/evaluationDB-Raw/archive/master.zip",
                 "raw-download.zip")
 
   unzip("raw-download.zip", exdir = "data-raw")
