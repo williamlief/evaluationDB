@@ -41,8 +41,8 @@ evaluationDB
 A dataset containing the count and percent of teachers
 receiving each evaluation score for a subset of school districts and years.
 }
-\section{}{
- Imputation:
+\section{Imputation}{
+
 
 To protect anonymity, some districts suppressed ratings when small numbers of
 teachers received a specific rating (typically ten or fewer teachers). In some
@@ -58,6 +58,13 @@ to the developing category. All cases where imputation of this nature occurred
 are indicated through the `impute_` variables. There were also cases when districts
 reported that some number of teachers had a suppressed rating, this is reported in
 the `count/percent_suppressed` variables.
+}
+
+\section{State Notes}{
+
+\describe{
+  \item{Florida}{Florida separates its second level rating into two categories: Needs Improvement, and 3 Years developing. The latter is reserved for teachers with less than three years of experience. For this database I have combined the two categories. }
+}
 }
 
 \keyword{datasets}

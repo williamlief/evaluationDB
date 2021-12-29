@@ -18,7 +18,7 @@ path <- "data-raw/Florida/evaluation"
 # 1617DistEduEvalRate.xls # 2017
 
 
-## Deal with the pdf files. 
+## Deal with the pdf files.
 # 1 parse pdf text
 # 2 clean text
 # 3 read in
@@ -49,97 +49,99 @@ parse <- list()
 
 parse[[1]] <- bind_rows(
   read.csv(text = text_read[[1]][[1]],  skip = 2, head = FALSE, sep = "", colClasses = "character"),
-  read.csv(text = text_read[[1]][[2]],  skip = 0, head = FALSE, sep = "", colClasses = "character") 
-) %>% 
-  rename(localid = V1, 
-         name = V2, 
-         e4 = V3, 
-         e3 = V4, 
-         e2.1 = V5, 
-         e2.2 = V6, 
-         e1 = V7, 
+  read.csv(text = text_read[[1]][[2]],  skip = 0, head = FALSE, sep = "", colClasses = "character")
+) %>%
+  rename(localid = V1,
+         name = V2,
+         e4 = V3,
+         e3 = V4,
+         e2.1 = V5,
+         e2.2 = V6,
+         e1 = V7,
          eu = V8,
-         et = V9) %>% 
-  filter(localid != "STATE") %>% 
+         et = V9) %>%
+  filter(localid != "STATE") %>%
   mutate(year = 2012)
 
 
-parse[[2]] <- 
-  read.csv(text = text_read[[2]], skip = 2, head = FALSE, sep = "", colClasses = "character") %>% 
-  select(localid = V1, 
-         name = V2, 
-         e4 = V3, 
-         e3 = V4, 
-         e2.1 = V5, 
-         e2.2 = V6, 
-         e1 = V7, 
+parse[[2]] <-
+  read.csv(text = text_read[[2]], skip = 2, head = FALSE, sep = "", colClasses = "character") %>%
+  select(localid = V1,
+         name = V2,
+         e4 = V3,
+         e3 = V4,
+         e2.1 = V5,
+         e2.2 = V6,
+         e1 = V7,
          eu = V8,
-         et = V9) %>% 
-  filter(localid != "State") %>% 
+         et = V9) %>%
+  filter(localid != "State") %>%
   mutate(year = 2013)
 
 
-parse[[3]] <- 
-  read.csv(text = text_read[[3]], skip = 3, head = FALSE, sep = "", colClasses = "character") %>% 
-  select(localid = V1, 
-         name = V2, 
-         e4 = V3, 
-         e3 = V4, 
-         e2.1 = V5, 
-         e2.2 = V6, 
-         e1 = V7, 
+parse[[3]] <-
+  read.csv(text = text_read[[3]], skip = 3, head = FALSE, sep = "", colClasses = "character") %>%
+  select(localid = V1,
+         name = V2,
+         e4 = V3,
+         e3 = V4,
+         e2.1 = V5,
+         e2.2 = V6,
+         e1 = V7,
          eu = V8,
-         et = V9) %>% 
-  filter(localid != "Statewide_Total") %>% 
+         et = V9) %>%
+  filter(localid != "Statewide_Total") %>%
   mutate(year = 2014)
 
 
-parse[[4]] <- 
-  read.csv(text = text_read[[4]], skip = 6, head = FALSE, sep = "", colClasses = "character") %>% 
-  select(localid = V1, 
-         name = V2, 
-         e4 = V3, 
-         e3 = V5, 
-         e2.1 = V7, 
-         e2.2 = V9, 
-         e1 = V11, 
+parse[[4]] <-
+  read.csv(text = text_read[[4]], skip = 6, head = FALSE, sep = "", colClasses = "character") %>%
+  select(localid = V1,
+         name = V2,
+         e4 = V3,
+         e3 = V5,
+         e2.1 = V7,
+         e2.2 = V9,
+         e1 = V11,
          eu = V13,
-         et = V15) %>% 
-  filter(localid != "STATEWIDE_TOTAL", 
-         localid != "Page") %>% 
+         et = V15) %>%
+  filter(localid != "STATEWIDE_TOTAL",
+         localid != "Page") %>%
   mutate(year = 2015)
 
 # Process Excel files - finally some consistent formatting
 excel_parse <- function(filename, skip, year) {
   read_excel(paste(path, filename, sep = "/"),
-             sheet="Clsrm Tchrs - Pct by Dist", skip = skip, 
-             col_types = "text") %>% 
-    select(localid = ...1, 
-           name = ...2, 
-           e4 = N...3, 
-           e3 = N...5, 
-           e2.1 = N...7, 
-           e2.2 = N...9, 
-           e1 = N...11, 
+             sheet="Clsrm Tchrs - Pct by Dist", skip = skip,
+             col_types = "text") %>%
+    select(localid = ...1,
+           name = ...2,
+           e4 = N...3,
+           e3 = N...5,
+           e2.1 = N...7,
+           e2.2 = N...9,
+           e1 = N...11,
            eu = ...13,
-           et = ...15) %>% 
-    filter(name != "STATEWIDE TOTAL") %>% 
+           et = ...15) %>%
+    filter(name != "STATEWIDE TOTAL") %>%
     mutate(year = !!year)
 }
 
-parse[[5]] <- 
+parse[[5]] <-
   excel_parse("1516DistEduEvalRate.xls", 2, 2016)
-  
-parse[[6]] <- 
+
+parse[[6]] <-
   excel_parse("1617DistEduEvalRate.xls", 2, 2017)
 
-parse[[7]] <- 
+parse[[7]] <-
   excel_parse("1718DistEduEvalRate.xls", 3, 2018)
 
+parse[[8]] <-
+  excel_parse("1819DistEduEvalRate.xls", 2, 2019)
 
 # Combine and clean up
-df <- bind_rows(parse) %>% 
-  mutate_at(vars(starts_with("e")), function(x) {as.numeric(gsub(",", "", x))}) %>% 
+df <- bind_rows(parse) %>%
+  mutate_at(vars(starts_with("e")), function(x) {as.numeric(gsub(",", "", x))}) %>%
   mutate(e2 = e2.1+e2.2,   # Florida splits developing category for early career teachers
          name = tolower(name),
          state = "FL") %>%
