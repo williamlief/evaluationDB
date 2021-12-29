@@ -64,11 +64,17 @@ d6 <- read_fun(ranges = list("A6:F78"),
                top_row_drop = 2,
                year = 2018)
 
+# 2018-19
+d7 <- read_fun(ranges = list("A6:F78"),
+               file = "2018-2019-compass-teacher-results-by-district-and-school.xlsx",
+               sheet = "State-District Level",
+               top_row_drop = 2,
+               year = 2019)
 
 # Combine ---------------------------------------------------------------------
 
 df <-
-  bind_rows(d1, d2, d3, d4, d5, d6) %>%
+  bind_rows(d1, d2, d3, d4, d5, d6, d7) %>%
   rename(parish_name = `Parish Name`,
          localid = `Sponsor Code`,
          p1 = Ineffective,
