@@ -18,7 +18,8 @@ files <- lapply(
   col_types = cols(.default = "d", state = "c", year = 'i', localid = "c", name = "c")
 )
 
-df <- files %>% bind_rows()
+df <- files %>% bind_rows() %>%
+  filter(year <= 2019) # exclude anything with COVID
 
 # Create p_ variables ----------------------------------------------------------
 
@@ -93,6 +94,9 @@ df_nces <- df_nces[!is.na(df_nces$NCES_leaid),]
 
 # Get rid of districts without any p-values
 warning(paste("Dropping", sum(is.na(df_nces$p1))  ,"districts without any evaluation percents"))
+# This is a lot of districts, especially in MA. But visual checking shows many
+# districts in MA that report 100% teachers evaluated, but no actual data on what
+# those evals were.
 df_nces <- df_nces[!is.nan(df_nces$p1),]
 
 

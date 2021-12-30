@@ -5,7 +5,7 @@
 # Current observation count! update with new data. This test is expected to fail
 # frequently, but forces us to be very explicit about adding or removing rows.
 # Remember to update r/evaluationDB.R documentation when this count changes!
-expected_rows <- 19983
+expected_rows <- 17447
 
 test_that("Expected number of rows exists", {
   expect_equal(nrow(evaluationDB), expected_rows)

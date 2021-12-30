@@ -11,28 +11,73 @@
 #' the number in the other rating categories so we could recover the number in the
 #' suppressed category. Note that because we only know the number of teachers
 #' receiving a rating, and have no individual information about the teachers,
-#' n-size suppression in this context is unnecessary for privacy protection. In
-#' other districts rating categories with ten or fewer teachers were suppressed as were the
-#' number of teachers rated in the next smallest category. In this case, when the
-#' two suppressed categories were ineffective and developing, I assigned all teachers
-#' to the developing category. All cases where imputation of this nature occurred
-#' are indicated through the `impute_` variables. There were also cases when districts
-#' reported that some number of teachers had a suppressed rating, this is reported in
-#' the `count/percent_suppressed` variables.
+#' n-size suppression in this context is unnecessary for privacy protection. All
+#' cases where imputation of this nature occurred are indicated through the `impute_`
+#' variables. See section State Notes for more details on imputation.
+#'
+#' There were also cases when districts reported that some number of teachers
+#' had a suppressed rating, this is reported in the `count/percent_suppressed`
+#' variables.
 #'
 #' @section State Notes:
 #' \describe{
-#'   \item{Florida}{Florida separates its second level rating into two categories: Needs Improvement, and 3 Years developing. The latter is reserved for teachers with less than three years of experience. For this database I have combined the two categories. }
+#'   \item{Connecticut}{Categories: (1) Below Standard, (2) Developing,
+#'   (3) Proficient, (4) Exemplary. Other notes: Limited data available, only
+#'   2013-14 and 2014-15}
+#'
+#'   \item{Florida}{Categories: (1) Unsatisfactory, (2) Needs Improvement / 3
+#'   Years developing. The latter is reserved for teachers with less than three
+#'    years of experience. For this database I have combined the two categories.
+#'    (3) Effective, (4) Highly Effective. Data available 2011-12 through 2018-19.}
+#'
+#'   \item{Idaho}{Categories: (1) Unsatisfactory, (2) Basic,
+#'   (3) Proficient, (4) Distinguished. Data available 2014-15 through 2018-19.}
+#'
+#'   \item{Indiana}{Categories: (1) Ineffective, (2) Improvement Necessary,
+#'   (3) Effective, (4) Highly Effective. Data available 2012-13 through 2018-19.}
+#'
+#'   \item{Louisiana}{Categories: (1) Ineffective, (2) Effective: Emerging,
+#'   (3) Effective: Proficient, (4) Highly Effective. Other Notes: Louisiana only
+#'    reports the proportion of teachers evaluated, and not the counts. Therefore
+#'     all count variables are null. Louisiana redacts percentages that are less than 1.
+#'     However, they can be recovered by comparing against the unredacted categories. When
+#'     both the level 1 and 2 categories are redacted, all missing ratings are imputed to be level 2.
+#'     Data available 2012-13 through 2018-19.}
+#'
+#'   \item{Massachussettes}{Categories: (1) Unsatisfactory, (2) Needs Improvement,
+#'   (3) Proficient, (4) Exemplary. Data available 2012-13 through 2018-19. Many
+#'   districts did not report evaluations and are excluded from this dataset.}
+#'
+#'   \item{Michigan}{Categories: (1) Below Standard, (2) Developing,
+#'   (3) Proficient, (4) Exemplary. Data available 2011-12 through 2018-19.}
+#'
+#'   \item{New Jersey}{Categories: (1) Ineffective, (2) Partially Effective,
+#'   (3) Effective, (4) Highly Effective. When both level 1 and 2 are redacted,
+#'   level 2 is imputed by comparing the missing records to the total reported.
+#'   Data available limited: 2013-14 through 2015-16}
+#'
+#'   \item{Ohio}{Categories: (1) Ineffective, (2) Developing, (3) Skilled,
+#'   (4) Accomplished. Ohio redacts ratings when less than 3 teachers received that
+#'   rating. These have been imputed to be zero.
+#'   Data available 2013-14, 2016-17 through 2018-19}
+#'
+#'   \item{Rhode Island}{Categories: (1) Ineffective, (2) Developing,
+#'   (3) Effective, (4) Highly Effective. Data available 2013-14 through 2018-19.}
 #' }
 #'
-#' @format a data frame with 19983 rows and 21 variables
+#' @format a tibble with 17447 rows and 21 variables
 #' \describe{
 #'   \item{state}{the name of the state, not null}
-#'   \item{year}{school year, 2012-13 coded as 2013, not null}
+#'   \item{year}{spring year of school year, 2012-13 coded as 2013, not null}
 #'   \item{district_name}{descriptive district name, not null}
 #'   \item{localid}{nces localid for school district, not null}
 #'   \item{NCES_leaid}{nces leaid for school district, not null}
-#'   \item{count_teachers}{number of teachers in school district as reported in evaluation files. Some state-years only reported proportions evaluated and not counts. In those cases the total number of teachers evaluated and the count in each category will be null}
+#'   \item{count_teachers}{number of teachers in school district as reported in
+#'    evaluation files. Some state-years only reported proportions evaluated and
+#'     not counts. In those cases the total number of teachers evaluated and the
+#'      count in each category will be null. Some states did not report a total
+#'      count of teachers, in those cases, the value was left null and not imputed
+#'      from other values reported. }
 #'   \item{count_not_evaluated}{number of teachers without reported evaluations. Note that these teachers are excluded from the percentage calculations. The percents given are only of evaluated teachers}
 #'   \item{count_suppressed}{number of teachers with ratings suppressed for privacy reasons by the source. These teachers are included in the percentage calculations.}
 #'   \item{count_level1}{number of teachers with lowest rating - typically "ineffective"}
