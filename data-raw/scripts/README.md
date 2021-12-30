@@ -17,7 +17,7 @@ These notes apply to cleaning the raw data and the intermediary csv files. The c
 * year: 4 character spring year. e.g. 2012-2013 school year = 2013
 * name: state used district name, all lower case
 * localid: state used district id
-* NCES_leaid (TODO)
+* NCES_leaid: NCES standardized district id
 
 ## Evaluation
 * et: total count of teachers reported by district
