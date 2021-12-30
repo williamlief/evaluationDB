@@ -12,7 +12,12 @@ a tibble with 17447 rows and 21 variables
   \item{district_name}{descriptive district name, not null}
   \item{localid}{nces localid for school district, not null}
   \item{NCES_leaid}{nces leaid for school district, not null}
-  \item{count_teachers}{number of teachers in school district as reported in evaluation files. Some state-years only reported proportions evaluated and not counts. In those cases the total number of teachers evaluated and the count in each category will be null}
+  \item{count_teachers}{number of teachers in school district as reported in
+   evaluation files. Some state-years only reported proportions evaluated and
+    not counts. In those cases the total number of teachers evaluated and the
+     count in each category will be null. Some states did not report a total
+     count of teachers, in those cases, the value was left null and not imputed
+     from other values reported. }
   \item{count_not_evaluated}{number of teachers without reported evaluations. Note that these teachers are excluded from the percentage calculations. The percents given are only of evaluated teachers}
   \item{count_suppressed}{number of teachers with ratings suppressed for privacy reasons by the source. These teachers are included in the percentage calculations.}
   \item{count_level1}{number of teachers with lowest rating - typically "ineffective"}

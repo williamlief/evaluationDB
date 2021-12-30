@@ -9,7 +9,7 @@ test_that("No Missing Values - excluding LA and OH, count teachers", {
 
 })
 
-test_that("No Missing Values - LA OH", {
+test_that("No Missing Values, LA OH excluding count variables", {
   df <- dplyr::filter(evaluationDB, state %in% c("LA", "OH"))
   df <- dplyr::select(df, -dplyr::starts_with("count_"))
 
