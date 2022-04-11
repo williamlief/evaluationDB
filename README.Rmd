@@ -37,6 +37,8 @@ evaluationDB %>%
 
 The data can be installed from github as an r-package and is fully documented in R. 
 
+The raw data is also available as a csv file in `inst/evaluationDB.csv`
+
 ``` r
 # install.packages("devtools")
 devtools::install_github("williamlief/evaluationDB")
